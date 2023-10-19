@@ -1,0 +1,15 @@
+apiVersion: batch/v1                  
+kind: Job                             
+metadata:
+  name: multi-completion-batch-job 
+spec:         
+  completions: 5  # Job run five pods sequentially  
+  template:
+    metadata:
+      labels:                         
+        app: batch-job                
+    spec:
+      restartPolicy: OnFailure    # default is Always     
+      containers:
+      - name: main
+        image: luksa/batch-job
