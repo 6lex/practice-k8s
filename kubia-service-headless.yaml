@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: kubia-s             
+spec:
+  clusterIP: None         
+  selector:               
+    app: kubia-s            
+  ports:
+  - name: http
+    port: 80

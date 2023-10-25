@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kubia-s
+spec:
+   serviceName: kubia-s
+   replicas: 2
+   selector: 
+    matchLabels:
+      app: kubia-s
+      provider: scaleway
+   template:
+    metadata:
+      labels:
+        app: kubia-s
+        provider: scaleway
+    spec:
+      containers:
+      - name: kubia-s
+        image: aldodockerhub/kubia:stateful
+        ports:
+        - name: http
+          containerPort: 8080
+        volumeMounts:
+          - name: data-s
+            mountPath: /var/data
+
+   volumeClaimTemplates:
+   - metadata:                        
+      name: data-s  
+     spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: scw-bssd
+        resources:
+          requests:
+            storage: 1Gi       
