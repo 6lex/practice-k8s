@@ -1,0 +1,37 @@
+# kubia-deployment-v3-with-readinesscheck.yaml
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: kubia
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: kubia
+
+  minReadySeconds: 10 # Le Pod doit rester en état Ready pendant au moins 10 secondes consécutives pour être considéré comme disponible
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
+  template:
+    metadata:
+      labels:
+        app: kubia
+
+    spec:
+      containers:
+        - name: nodejs
+          image: aldodockerhub/kubia:v3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5 # Attendre 5 secondes après le démarrage avant de lancer les checks
+            periodSeconds: 5

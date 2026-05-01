@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia-nodeport
+  namespace: default
+spec:
+  selector:
+    app: kubia
+  ports:
+  - protocol: TCP
+    port: 80        # Port exposé par le service
+    targetPort: 8080 # Port sur lequel le Pod écoute
+  type: NodePort
